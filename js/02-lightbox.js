@@ -1,27 +1,30 @@
 import { galleryItems } from "./gallery-items.js";
 // Change code below this line
 
-const galleryEl = document.querySelector(".gallery");
-const galleryMarkup = createGalleryMarkup(galleryItems);
+console.log(galleryItems);
 
-galleryEl.innerHTML = galleryMarkup;
+const galleryRef = document.querySelector(".gallery");
 
-const slide = new SimpleLightbox(".gallery a", {
-  captionsData: "alt",
-  captionPosition: "bottom",
-  captionDelay: 250,
-});
+const markup = galleryItems
+  .map(
+    ({ preview, original, description }) => `
 
-function createGalleryMarkup(items) {
-  return items
-    .map(
-      ({ preview, original, description }) =>
-        `<a class="gallery__item" href="${original}">
-          <img class="gallery__image" src="${preview}" 
-          alt="${description}" />
-        </a>`
-    )
-    .join("");
+<a class="gallery__item" href="${original}">
+  <img class="gallery__image" src="${preview}" alt="${description}" />
+</a>`
+  )
+  .join("");
+
+galleryRef.insertAdjacentHTML("beforeend", markup);
+// console.log(markup);
+
+galleryRef.addEventListener("click", onGalleryClick);
+
+function onGalleryClick(evt) {
+  evt.preventDefault();
 }
 
-console.log(galleryItems);
+const lightbox = new SimpleLightbox(".gallery a", {
+  captionsData: `alt`,
+  captionDelay: `250`,
+});
